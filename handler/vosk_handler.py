@@ -7,6 +7,8 @@ import time
 import vosk
 import wave
 import tempfile
+
+from PySide6.QtGui import QTextCursor, QTextDocument
 from pydub import AudioSegment
 
 model_path = 'F:\\Util\\models\\vosk\\vosk-model-small-cn-0.22'
@@ -39,18 +41,15 @@ def recognize_speech(audio_file, model_path, widget=None):
             break
 
         if rec.AcceptWaveform(frames):  # 使用AcceptWaveform方法传递音频数据
-            widget.append(json.loads(rec.Result())['text'].replace(" ", ""))
+            str1 = json.loads(rec.Result())['text'].replace(" ", "")
+            widget.append(str1)
             widget.append("\n")
             # print(result)  # 打印部分识别结果
         else:
-            pass
-        #     print(rec.PartialResult())
+           pass
     # 获取最终识别结果
     widget.append(json.loads(rec.Result())['text'].replace(" ", ""))  # 打印最终识别结果
+    print(rec.Result())
 
     # 关闭音频文件
     wf.close()
-
-
-def current_read_time(sample_rate, sample_width, frames, frame_count):
-    pass

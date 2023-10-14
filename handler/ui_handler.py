@@ -1,5 +1,8 @@
 import sys
 import random
+
+from PySide6.QtGui import QTextCursor, QPalette, QColor
+
 from handler.vosk_handler import to_wav
 from ui.ui_main import Ui_MainWindow
 from ui.ui_vosk_text import Ui_Form
@@ -21,6 +24,7 @@ class WidgetText(QWidget, QThread):
 
     def __init__(self, file_path):
         super().__init__()
+        self.text_box = None
         suffix = file_path.split("/")[-1].split(".")[0]
         self.setGeometry(random.randint(50, 300), random.randint(50, 300), 50, 50)
         self.file_path = file_path
@@ -30,18 +34,17 @@ class WidgetText(QWidget, QThread):
         layout = QVBoxLayout()
         self.setLayout(layout)
         layout.addWidget(self.ui.content_text)
-        self.text_append_signal.connect(self.append_text)
 
     def closeEvent(self, event) -> None:
         mainW.vosk_list.remove(self)
 
-    def append_text(self, content):
-        self.ui.content_text.append(content)
-
     def run(self) -> None:
+        palette = self.ui.content_text.palette()
+        palette.setColor(QPalette.Base, QColor("#fcfdfa"))  # 设置背景色为黄色
+        self.ui.content_text.setPalette(palette)
+        self.ui.content_text.setReadOnly(True)
         to_wav(self.ui.content_text, self.file_path)
-        warning("成功提醒",self.windowTitle()+"完成了")
-
+        self.ui.content_text.setReadOnly(False)
 
 app = QApplication(sys.argv)
 # 初始化窗口
@@ -70,7 +73,7 @@ def file_select():
 
 def vosk_recognition():
     if ui.file_path.text() is None or ui.file_path.text().strip() == "":
-        warning("警告","请选择文件")
+        warning("警告", "请选择文件")
     else:
         ui_form = WidgetText(ui.file_path.text())
         mainW.vosk_list.append(ui_form)
@@ -78,7 +81,7 @@ def vosk_recognition():
         ui_form.start()
 
 
-def warning(title,content):
+def warning(title, content):
     msg = QMessageBox(text=content)
     msg.setWindowTitle(title)
     msg.setStandardButtons(QMessageBox.StandardButton.Ok)

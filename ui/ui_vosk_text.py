@@ -24,11 +24,7 @@ class Ui_Form(object):
         Form.resize(440, 494)
         self.content_text = QTextEdit(Form)
         self.content_text.setObjectName(u"content_text")
-        self.content_text.setGeometry(QRect(20, 10, 411, 451))
-        font = QFont()
-        font.setFamilies([u"\u5b8b\u4f53"])
-        font.setPointSize(10)
-        self.content_text.setFont(font)
+        self.content_text.setGeometry(QRect(40, 30, 311, 391))
 
         self.retranslateUi(Form)
 

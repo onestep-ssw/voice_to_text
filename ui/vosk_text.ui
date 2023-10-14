@@ -16,17 +16,11 @@
   <widget class="QTextEdit" name="content_text">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>411</width>
-     <height>451</height>
+     <x>40</x>
+     <y>30</y>
+     <width>311</width>
+     <height>391</height>
     </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>宋体</family>
-     <pointsize>10</pointsize>
-    </font>
    </property>
   </widget>
  </widget>
