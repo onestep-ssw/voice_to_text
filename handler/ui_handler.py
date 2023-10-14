@@ -8,7 +8,7 @@ from ui.ui_main import Ui_MainWindow
 from ui.ui_vosk_text import Ui_Form
 from PySide6.QtCore import QThread, Signal, QStandardPaths
 from PySide6.QtWidgets import (QApplication, QMainWindow, QMessageBox, QFileDialog, QWidget,
-                               QVBoxLayout)
+                               QVBoxLayout,)
 
 
 class MainWindow(QMainWindow):
@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.vosk_list = []
+        self.setWindowIcon(Q)
 
 
 class WidgetText(QWidget, QThread):
