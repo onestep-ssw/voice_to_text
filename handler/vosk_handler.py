@@ -1,6 +1,9 @@
 import json
+import math
 import os
 import sys
+import time
+
 import vosk
 import wave
 import tempfile
@@ -27,35 +30,23 @@ def to_wav(widget, path):
 def recognize_speech(audio_file, model_path, widget=None):
     # 打开音频文件
     wf = wave.open(audio_file, 'rb')
-    # 获取采样数和采样宽度
-    sample_rate = wf.getframerate()
-    sample_width = wf.getsampwidth()
     # 创建Vosk识别器
     rec = vosk.KaldiRecognizer(vosk.Model(model_path), wf.getframerate())
-    # 初始化已读取的帧数
-    frame_count = 0
     # 读取音频数据并进行识别
     while True:
         frames = wf.readframes(4000)  # 每次读取一段音频数据
         if len(frames) == 0:
             break
-        if rec.AcceptWaveform(frames):  # 使用AcceptWaveform方法传递音频数据
-            frame_count += len(frames)
-            # 计算当前时间
-            current_time = round(len(frames) / sample_width / sample_rate, 2)
-            current_time = int(current_time) * 100
-            mins, secs = divmod(current_time, 60)
-            timer = '{:02d}:{:02d}'.format(mins, secs)
-            print('读取到的当前时间（秒）:', timer)
 
-            widget.append(json.loads(rec.Result())['text'])
+        if rec.AcceptWaveform(frames):  # 使用AcceptWaveform方法传递音频数据
+            widget.append(json.loads(rec.Result())['text'].replace(" ", ""))
             widget.append("\n")
             # print(result)  # 打印部分识别结果
         else:
             pass
         #     print(rec.PartialResult())
     # 获取最终识别结果
-    widget.append(json.loads(rec.Result())['text'])  # 打印最终识别结果
+    widget.append(json.loads(rec.Result())['text'].replace(" ", ""))  # 打印最终识别结果
 
     # 关闭音频文件
     wf.close()
