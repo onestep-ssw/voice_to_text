@@ -21,10 +21,10 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(771, 836)
+        Form.resize(440, 494)
         self.content_text = QTextEdit(Form)
         self.content_text.setObjectName(u"content_text")
-        self.content_text.setGeometry(QRect(20, 10, 471, 381))
+        self.content_text.setGeometry(QRect(20, 10, 411, 451))
 
         self.retranslateUi(Form)
 
