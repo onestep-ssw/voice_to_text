@@ -40,6 +40,7 @@ class WidgetText(QWidget, QThread):
 
     def run(self) -> None:
         to_wav(self.ui.content_text, self.file_path)
+        warning("成功提醒",self.windowTitle()+"完成了")
 
 
 app = QApplication(sys.argv)
@@ -69,7 +70,7 @@ def file_select():
 
 def vosk_recognition():
     if ui.file_path.text() is None or ui.file_path.text().strip() == "":
-        warning("请选择文件")
+        warning("警告","请选择文件")
     else:
         ui_form = WidgetText(ui.file_path.text())
         mainW.vosk_list.append(ui_form)
@@ -77,9 +78,9 @@ def vosk_recognition():
         ui_form.start()
 
 
-def warning(content):
+def warning(title,content):
     msg = QMessageBox(text=content)
-    msg.setWindowTitle("警告")
+    msg.setWindowTitle(title)
     msg.setStandardButtons(QMessageBox.StandardButton.Ok)
     msg.exec_()
 
