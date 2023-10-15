@@ -1,17 +1,12 @@
 import json
-import math
-import os
-import sys
-import time
+import tempfile
+import wave
 
 import vosk
-import wave
-import tempfile
-
-from PySide6.QtGui import QTextCursor, QTextDocument
 from pydub import AudioSegment
+import main
 
-model_path = 'F:\\Util\\models\\vosk\\vosk-model-small-cn-0.22'
+model_path = main.model_path
 
 
 def to_wav(widget, path):
@@ -46,7 +41,7 @@ def recognize_speech(audio_file, model_path, widget=None):
             widget.append("\n")
             # print(result)  # 打印部分识别结果
         else:
-           pass
+            pass
     # 获取最终识别结果
     widget.append(json.loads(rec.Result())['text'].replace(" ", ""))  # 打印最终识别结果
     print(rec.Result())

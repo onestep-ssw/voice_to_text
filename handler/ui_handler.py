@@ -91,7 +91,7 @@ def warning(title, content):
     msg.exec_()
 
 
-def main():
+def main(model_path):
     event_confirm()
     mainW.show()
     sys.exit(app.exec_())
