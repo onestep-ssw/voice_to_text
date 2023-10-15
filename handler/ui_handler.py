@@ -1,3 +1,4 @@
+import os
 import sys
 import random
 
@@ -12,13 +13,20 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QMessageBox, QFileDial
                                QVBoxLayout,)
 
 
+
+def resource_path(relative_path):
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+ico_path = resource_path("vtt.ico")
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.vosk_list = []
-        self.setWindowIcon(QIcon("vtt.ico"))
+        self.setWindowIcon(QIcon(ico_path))
 
 
 class WidgetText(QWidget, QThread):
@@ -33,7 +41,7 @@ class WidgetText(QWidget, QThread):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.setWindowTitle(suffix)
-        self.setWindowIcon(QIcon("vtt.ico"))
+        self.setWindowIcon(QIcon(ico_path))
         layout = QVBoxLayout()
         self.setLayout(layout)
         layout.addWidget(self.ui.content_text)
@@ -48,6 +56,8 @@ class WidgetText(QWidget, QThread):
         self.ui.content_text.setReadOnly(True)
         to_wav(self.ui.content_text, self.file_path)
         self.ui.content_text.setReadOnly(False)
+
+
 
 app = QApplication(sys.argv)
 # 初始化窗口
@@ -91,7 +101,7 @@ def warning(title, content):
     msg.exec_()
 
 
-def main(model_path):
+def main():
     event_confirm()
     mainW.show()
     sys.exit(app.exec_())
