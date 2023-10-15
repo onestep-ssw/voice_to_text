@@ -37,14 +37,13 @@ def recognize_speech(audio_file, model_path, widget=None):
 
         if rec.AcceptWaveform(frames):  # 使用AcceptWaveform方法传递音频数据
             str1 = json.loads(rec.Result())['text'].replace(" ", "")
-            widget.append(str1)
-            widget.append("\n")
+            widget.ui.content_text.append(str1)
+            widget.ui.content_text.append("\n")
             # print(result)  # 打印部分识别结果
         else:
             pass
     # 获取最终识别结果
-    widget.append(json.loads(rec.Result())['text'].replace(" ", ""))  # 打印最终识别结果
-    print(rec.Result())
-
+    widget.ui.content_text.append(json.loads(rec.Result())['text'].replace(" ", ""))  # 打印最终识别结果
+    widget.titleChange(widget.path_name+"（完成）")
     # 关闭音频文件
     wf.close()

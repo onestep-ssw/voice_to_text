@@ -1,6 +1,7 @@
 import os
 import sys
 import random
+from threading import Thread
 
 from PySide6.QtGui import QTextCursor, QPalette, QColor
 
@@ -10,15 +11,16 @@ from ui.ui_vosk_text import Ui_Form
 from PySide6.QtGui import QIcon
 from PySide6.QtCore import QThread, Signal, QStandardPaths
 from PySide6.QtWidgets import (QApplication, QMainWindow, QMessageBox, QFileDialog, QWidget,
-                               QVBoxLayout,)
-
+                               QVBoxLayout, )
 
 
 def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
+
 ico_path = resource_path("vtt.ico")
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -29,13 +31,14 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(ico_path))
 
 
-class WidgetText(QWidget, QThread):
+class WidgetText(QWidget, Thread):
     text_append_signal = Signal(str)
 
     def __init__(self, file_path):
         super().__init__()
         self.text_box = None
         suffix = file_path.split("/")[-1]
+        self.path_name = suffix
         self.setGeometry(random.randint(50, 300), random.randint(50, 300), 50, 50)
         self.file_path = file_path
         self.ui = Ui_Form()
@@ -49,14 +52,15 @@ class WidgetText(QWidget, QThread):
     def closeEvent(self, event) -> None:
         mainW.vosk_list.remove(self)
 
-    def run(self) -> None:
+    def titleChange(self,newTitle):
+        self.setWindowTitle(newTitle)
+    def run(self):
         palette = self.ui.content_text.palette()
-        palette.setColor(QPalette.Base, QColor("#fcfdfa"))  # 设置背景色为黄色
+        palette.setColor(QPalette.Base, QColor("#fcfdfa"))  # 设置背景色
         self.ui.content_text.setPalette(palette)
         self.ui.content_text.setReadOnly(True)
-        to_wav(self.ui.content_text, self.file_path)
+        to_wav(self, self.file_path)
         self.ui.content_text.setReadOnly(False)
-
 
 
 app = QApplication(sys.argv)
@@ -91,6 +95,7 @@ def vosk_recognition():
         ui_form = WidgetText(ui.file_path.text())
         mainW.vosk_list.append(ui_form)
         ui_form.show()
+        ui_form.titleChange(ui_form.path_name + "（读取中）")
         ui_form.start()
 
 
