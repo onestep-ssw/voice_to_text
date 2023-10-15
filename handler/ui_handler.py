@@ -6,6 +6,7 @@ from PySide6.QtGui import QTextCursor, QPalette, QColor
 from handler.vosk_handler import to_wav
 from ui.ui_main import Ui_MainWindow
 from ui.ui_vosk_text import Ui_Form
+from PySide6.QtGui import QIcon
 from PySide6.QtCore import QThread, Signal, QStandardPaths
 from PySide6.QtWidgets import (QApplication, QMainWindow, QMessageBox, QFileDialog, QWidget,
                                QVBoxLayout,)
@@ -17,7 +18,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.vosk_list = []
-        self.setWindowIcon(Q)
+        self.setWindowIcon(QIcon("vtt.ico"))
 
 
 class WidgetText(QWidget, QThread):
@@ -26,12 +27,13 @@ class WidgetText(QWidget, QThread):
     def __init__(self, file_path):
         super().__init__()
         self.text_box = None
-        suffix = file_path.split("/")[-1].split(".")[0]
+        suffix = file_path.split("/")[-1]
         self.setGeometry(random.randint(50, 300), random.randint(50, 300), 50, 50)
         self.file_path = file_path
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.setWindowTitle(suffix)
+        self.setWindowIcon(QIcon("vtt.ico"))
         layout = QVBoxLayout()
         self.setLayout(layout)
         layout.addWidget(self.ui.content_text)
