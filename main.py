@@ -2,12 +2,12 @@ import os
 
 import handler.ui_handler as ui_handel
 
-os.environ["ffmpeg"] = os.getcwd() + "\\ffmpeg-master-latest-win64-gpl\\bin\\"
 
-model_path = os.getcwd() + "\\vosk-model-cn-0.22\\"
+# 这里配置 就可以傻瓜式使用了
+os.environ["ffmpeg"] = os.getcwd() + r"\ffmpeg-n6.0-latest-win64-lgpl-6.0\bin\ffmpeg.exe"
+model_path = os.getcwd() + r"\vosk-model-cn-0.22"
 
 
 if __name__ == '__main__':
-     ui_handel.main()
-
-
+    # set_en()
+    ui_handel.main()
